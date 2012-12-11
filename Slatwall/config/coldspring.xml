@@ -1,0 +1,370 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+	
+	<!-- DAO Components -->
+	<bean id="accessDAO" class="Slatwall.com.dao.AccessDAO" />
+	<bean id="accountDAO" class="Slatwall.com.dao.AccountDAO" />
+	<bean id="addressDAO" class="Slatwall.com.dao.AddressDAO" />
+	<bean id="attributeDAO" class="Slatwall.com.dao.AttributeDAO" />
+	<bean id="baseDAO" class="Slatwall.com.dao.BaseDAO" />
+	<bean id="brandDAO" class="Slatwall.com.dao.BrandDAO" />
+	<bean id="commentDAO" class="Slatwall.com.dao.CommentDAO" />
+	<bean id="contentDAO" class="Slatwall.com.dao.ContentDAO" />
+	<bean id="currencyDAO" class="Slatwall.com.dao.CurrencyDAO" />
+	<bean id="dataDAO" class="Slatwall.com.dao.DataDAO" />
+	<bean id="emailDAO" class="Slatwall.com.dao.EmailDAO" />
+	<bean id="fulfillmentDAO" class="Slatwall.com.dao.FulfillmentDAO" />
+	<bean id="integrationDAO" class="Slatwall.com.dao.IntegrationDAO" />
+	<bean id="imageDAO" class="Slatwall.com.dao.ImageDAO" />
+	<bean id="inventoryDAO" class="Slatwall.com.dao.InventoryDAO" />
+	<bean id="locationDAO" class="Slatwall.com.dao.LocationDAO" />
+	<bean id="measurementUnitDAO" class="Slatwall.com.dao.MeasurementUnitDAO" />
+	<bean id="permissionDAO" class="Slatwall.com.dao.PermissionDAO" />
+	<bean id="productDAO" class="Slatwall.com.dao.ProductDAO" />
+	<bean id="productTypeDAO" class="Slatwall.com.dao.ProductTypeDAO" />
+	<bean id="reportDAO" class="Slatwall.com.dao.ReportDAO" />
+	<bean id="sessionDAO" class="Slatwall.com.dao.SessionDAO" />
+	<bean id="orderDAO" class="Slatwall.com.dao.OrderDAO" />
+	<bean id="settingDAO" class="Slatwall.com.dao.SettingDAO" />
+	<bean id="siteDAO" class="Slatwall.com.dao.SiteDAO" />
+	<bean id="skuDAO" class="Slatwall.com.dao.SkuDAO" />
+	<bean id="optionDAO" class="Slatwall.com.dao.OptionDAO" />
+	<bean id="taskDAO" class="Slatwall.com.dao.TaskDAO" />
+	<bean id="taxDAO" class="Slatwall.com.dao.TaxDAO" />
+	<bean id="typeDAO" class="Slatwall.com.dao.TypeDAO" />
+	<bean id="termDAO" class="Slatwall.com.dao.TermDAO" />
+	<bean id="scheduleDAO" class="Slatwall.com.dao.ScheduleDAO" />
+    <bean id="subscriptionDAO" class="Slatwall.com.dao.SubscriptionDAO" />
+	<bean id="shippingDAO" class="Slatwall.com.dao.ShippingDAO" />
+	<bean id="stockDAO" class="Slatwall.com.dao.StockDAO" />
+	<bean id="paymentDAO" class="Slatwall.com.dao.PaymentDAO" />
+	<bean id="priceGroupDAO" class="Slatwall.com.dao.PriceGroupDAO" />
+	<bean id="promotionDAO" class="Slatwall.com.dao.PromotionDAO" />
+	<bean id="roundingRuleDAO" class="Slatwall.com.dao.RoundingRuleDAO" />
+	<bean id="updateDAO" class="Slatwall.com.dao.UpdateDAO" />
+	<bean id="vendorDAO" class="Slatwall.com.dao.VendorDAO" />
+	<bean id="vendorOrderDAO" class="Slatwall.com.dao.VendorOrderDAO" />
+		
+	<!-- Service Components - Utility, these are to be injected where needed for misc tasks -->
+	<bean id="utilityService" class="Slatwall.com.service.UtilityService" />
+	<bean id="utilityFileService" class="Slatwall.com.service.UtilityFileService" />
+	<bean id="utilityFormService" class="Slatwall.com.service.UtilityFormService" />
+	<bean id="utilityLogService" class="Slatwall.com.service.UtilityLogService" />
+	<bean id="utilityORMService" class="Slatwall.com.service.UtilityORMService">
+		<property name="entityServiceMapping">
+			<map>
+				<entry key="Access"><value>accessService</value></entry>
+				<entry key="Account"><value>accountService</value></entry>
+				<entry key="AccountAddress"><value>accountService</value></entry>
+				<entry key="AccountContentAccess"><value>accountService</value></entry>
+				<entry key="AccountEmailAddress"><value>accountService</value></entry>
+				<entry key="AccountPayment"><value>accountService</value></entry>
+				<entry key="AccountPaymentMethod"><value>accountService</value></entry>
+				<entry key="AccountPhoneNumber"><value>accountService</value></entry>
+				<entry key="AccountRelationship"><value>accountService</value></entry>
+				<entry key="Address"><value>addressService</value></entry>
+				<entry key="AddressZone"><value>addressService</value></entry>
+				<entry key="AlternateSkuCode"><value>skuService</value></entry>
+				<entry key="Attribute"><value>attributeService</value></entry>
+				<entry key="AttributeOption"><value>attributeService</value></entry>
+				<entry key="AttributeSet"><value>attributeService</value></entry>
+				<entry key="AttributeValue"><value>attributeService</value></entry>
+				<entry key="BaseEntity"><value>baseService</value></entry>
+				<entry key="Brand"><value>brandService</value></entry>
+				<entry key="Category"><value>contentService</value></entry>
+				<entry key="Comment"><value>commentService</value></entry>
+				<entry key="CommentRelationship"><value>commentService</value></entry>
+				<entry key="Content"><value>contentService</value></entry>
+				<entry key="ContentAccess"><value>accessService</value></entry>
+				<entry key="Country"><value>addressService</value></entry>
+				<entry key="Currency"><value>currencyService</value></entry>
+				<entry key="Email"><value>emailService</value></entry>
+				<entry key="EmailTemplate"><value>emailService</value></entry>
+				<entry key="FulfillmentMethod"><value>fulfillmentService</value></entry>
+				<entry key="Image"><value>imageService</value></entry>
+				<entry key="Integration"><value>integrationService</value></entry>
+				<entry key="Inventory"><value>inventoryService</value></entry>
+				<entry key="Location"><value>locationService</value></entry>
+				<entry key="LocationAddress"><value>locationService</value></entry>
+				<entry key="MeasurementUnit"><value>measurementUnitService</value></entry>
+				<entry key="Option"><value>optionService</value></entry>
+				<entry key="OptionGroup"><value>optionService</value></entry>
+				<entry key="Order"><value>orderService</value></entry>
+				<entry key="OrderDelivery"><value>orderService</value></entry>
+				<entry key="OrderDeliveryItem"><value>orderService</value></entry>
+				<entry key="OrderFulfillment"><value>orderService</value></entry>
+				<entry key="OrderItem"><value>orderService</value></entry>
+				<entry key="OrderItemAppliedTax"><value>taxService</value></entry>
+				<entry key="OrderOrigin"><value>settingService</value></entry>
+				<entry key="OrderPayment"><value>orderService</value></entry>
+				<entry key="OrderReturn"><value>orderService</value></entry>
+				<entry key="PaymentMethod"><value>paymentService</value></entry>
+				<entry key="PaymentTerm"><value>paymentService</value></entry>
+				<entry key="PaymentTransaction"><value>paymentService</value></entry>
+				<entry key="PermissionGroup"><value>accountService</value></entry>
+				<entry key="PostalCode"><value>addressService</value></entry>
+				<entry key="PriceGroup"><value>priceGroupService</value></entry>
+				<entry key="PriceGroupRate"><value>priceGroupService</value></entry>
+				<entry key="Product"><value>productService</value></entry>
+				<entry key="ProductImage"><value>imageService</value></entry>
+				<entry key="ProductReview"><value>productService</value></entry>
+				<entry key="ProductType"><value>productService</value></entry>
+				<entry key="Promotion"><value>promotionService</value></entry>
+				<entry key="PromotionApplied"><value>promotionService</value></entry>
+				<entry key="PromotionCode"><value>promotionService</value></entry>
+				<entry key="PromotionImage"><value>promotionService</value></entry>
+				<entry key="PromotionPeriod"><value>promotionService</value></entry>
+				<entry key="PromotionQualifier"><value>promotionService</value></entry>
+				<entry key="PromotionReward"><value>promotionService</value></entry>
+				<entry key="RoundingRule"><value>roundingRuleService</value></entry>
+				<entry key="Schedule"><value>scheduleService</value></entry>
+				<entry key="Session"><value>sessionService</value></entry>
+				<entry key="Setting"><value>settingService</value></entry>
+				<entry key="ShippingMethod"><value>shippingService</value></entry>
+				<entry key="ShippingMethodOption"><value>shippingService</value></entry>
+				<entry key="ShippingMethodRate"><value>shippingService</value></entry>
+				<entry key="Sku"><value>skuService</value></entry>
+				<entry key="SkuCurrency"><value>skuService</value></entry>
+				<entry key="State"><value>addressService</value></entry>
+				<entry key="Stock"><value>stockService</value></entry>
+				<entry key="StockAdjustment"><value>stockService</value></entry>
+				<entry key="StockAdjustmentDelivery"><value>stockService</value></entry>
+				<entry key="StockAdjustmentDeliveryItem"><value>stockService</value></entry>
+				<entry key="StockAdjustmentItem"><value>stockService</value></entry>
+				<entry key="StockHold"><value>stockService</value></entry>
+				<entry key="StockReceiver"><value>stockService</value></entry>
+				<entry key="StockReceiverItem"><value>stockService</value></entry>
+				<entry key="SubscriptionBenefit"><value>subscriptionService</value></entry>
+				<entry key="SubscriptionOrderItem"><value>subscriptionService</value></entry>
+				<entry key="SubscriptionStatus"><value>subscriptionService</value></entry>
+				<entry key="SubscriptionTerm"><value>subscriptionService</value></entry>
+				<entry key="SubscriptionUsage"><value>subscriptionService</value></entry>
+				<entry key="SubscriptionUsageBenefit"><value>subscriptionService</value></entry>
+				<entry key="SubscriptionUsageBenefitAccount"><value>subscriptionService</value></entry>
+				<entry key="Task"><value>scheduleService</value></entry>
+				<entry key="TaskHistory"><value>scheduleService</value></entry>
+				<entry key="TaskSchedule"><value>scheduleService</value></entry>
+				<entry key="TaxApplied"><value>taxService</value></entry>
+				<entry key="TaxCategory"><value>taxService</value></entry>
+				<entry key="TaxCategoryRate"><value>taxService</value></entry>
+				<entry key="Term"><value>termService</value></entry>
+				<entry key="Type"><value>typeService</value></entry>
+				<entry key="UpdateScript"><value>updateService</value></entry>
+				<entry key="Vendor"><value>vendorService</value></entry>
+				<entry key="VendorAccount"><value>vendorService</value></entry>
+				<entry key="VendorAddress"><value>vendorService</value></entry>
+				<entry key="VendorEmailAddress"><value>vendorService</value></entry>
+				<entry key="VendorOrder"><value>vendorOrderService</value></entry>
+				<entry key="VendorOrderItem"><value>vendorOrderService</value></entry>
+				<entry key="VendorPhoneNumber"><value>vendorService</value></entry>
+				<entry key="VendorSkuStock"><value>vendorService</value></entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="utilityRBService" class="Slatwall.com.service.UtilityRBService" singleton="true" />
+	<bean id="utilityTagService" class="Slatwall.com.service.UtilityTagService" />
+	<bean id="utilityEmailService" class="Slatwall.com.service.UtilityEmailService">
+		<property name="utilityService"><ref bean="utilityService" /></property>
+	</bean>
+
+	<!-- Service Components - Main -->
+	<bean id="accessService" class="Slatwall.com.service.AccessService">
+        <property name="DAO"><ref bean="accessDAO" /></property>
+    </bean>
+	<bean id="accountService" class="Slatwall.com.service.AccountService">
+        <property name="DAO"><ref bean="accountDAO" /></property>
+		<property name="emailService"><ref bean="emailService" /></property>
+		<property name="paymentService"><ref bean="paymentService" /></property>
+		<property name="priceGroupService"><ref bean="priceGroupService" /></property>
+		<property name="sessionService"><ref bean="sessionService" /></property>
+    </bean>
+	<bean id="addressService" class="Slatwall.com.service.AddressService">
+        <property name="DAO"><ref bean="addressDAO" /></property>
+    </bean>
+	<bean id="attributeService" class="Slatwall.com.service.AttributeService">
+        <property name="DAO"><ref bean="attributeDAO" /></property>
+    </bean>
+	<bean id="baseService" class="Slatwall.com.service.BaseService">
+        <property name="DAO"><ref bean="baseDAO" /></property>
+	</bean>
+	<bean id="brandService" class="Slatwall.com.service.BrandService">
+        <property name="DAO"><ref bean="brandDAO" /></property>
+		<property name="dataService"><ref bean="dataService" /></property>
+	</bean>
+	<bean id="commentService" class="Slatwall.com.service.CommentService">
+        <property name="DAO"><ref bean="commentDAO" /></property>
+	</bean>
+	<bean id="contentService" class="Slatwall.com.service.ContentService">
+        <property name="DAO"><ref bean="contentDAO" /></property>
+		<property name="settingService"><ref bean="settingService" /></property>
+	</bean>
+	<bean id="currencyService" class="Slatwall.com.service.CurrencyService">
+        <property name="DAO"><ref bean="currencyDAO" /></property>
+	</bean>
+	<bean id="dataService" class="Slatwall.com.service.DataService">
+        <property name="DAO"><ref bean="dataDAO" /></property>
+	</bean>
+	<bean id="emailService" class="Slatwall.com.service.EmailService">
+        <property name="DAO"><ref bean="emailDAO" /></property>
+	</bean>
+	<bean id="encryptionService" class="Slatwall.com.service.EncryptionService" />
+	<bean id="fulfillmentService" class="Slatwall.com.service.FulfillmentService">
+        <property name="DAO"><ref bean="fulfillmentDAO" /></property>
+    </bean>
+	<bean id="integrationService" class="Slatwall.com.service.IntegrationService">
+        <property name="DAO"><ref bean="integrationDAO" /></property>
+		<property name="permissionService"><ref bean="permissionService" /></property>
+        <property name="utilityService"><ref bean="utilityService" /></property>
+    </bean>
+	<bean id="inventoryService" class="Slatwall.com.service.InventoryService">
+        <property name="DAO"><ref bean="inventoryDAO" /></property>
+    </bean>
+	<bean id="imageService" class="Slatwall.com.service.ImageService">
+        <property name="DAO"><ref bean="imageDAO" /></property>
+    </bean>
+	<bean id="locationService" class="Slatwall.com.service.LocationService">
+        <property name="DAO"><ref bean="locationDAO" /></property>
+	</bean>
+	<bean id="measurementUnitService" class="Slatwall.com.service.MeasurementUnitService">
+        <property name="DAO"><ref bean="measurementUnitDAO" /></property>
+	</bean>
+    <bean id="optionService" class="Slatwall.com.service.OptionService">
+        <property name="DAO"><ref bean="optionDAO" /></property>
+    </bean>
+	<bean id="orderService" class="Slatwall.com.service.OrderService">
+        <property name="DAO"><ref bean="orderDAO" /></property>
+		<property name="accountService"><ref bean="accountService" /></property>
+		<property name="addressService"><ref bean="addressService" /></property>
+		<property name="emailService"><ref bean="emailService" /></property>
+		<property name="fulfillmentService"><ref bean="fulfillmentService" /></property>
+		<property name="locationService"><ref bean="locationService" /></property>
+		<property name="paymentService"><ref bean="paymentService" /></property>
+		<property name="priceGroupService"><ref bean="priceGroupService" /></property>
+		<property name="promotionService"><ref bean="promotionService" /></property>
+		<property name="shippingService"><ref bean="shippingService" /></property>
+		<property name="sessionService"><ref bean="sessionService" /></property>
+		<property name="taxService"><ref bean="taxService" /></property>
+		<property name="utilityFormService"><ref bean="utilityFormService" /></property>
+		<property name="utilityTagService"><ref bean="utilityTagService" /></property>
+		<property name="stockService"><ref bean="stockService" /></property>
+		<property name="subscriptionService"><ref bean="subscriptionService" /></property>
+		<property name="typeService"><ref bean="typeService" /></property>
+    </bean>
+	<bean id="paymentService" class="Slatwall.com.service.PaymentService">
+        <property name="DAO"><ref bean="paymentDAO" /></property>
+		<property name="integrationService"><ref bean="integrationService" /></property>
+		<property name="sessionService"><ref bean="sessionService" /></property>
+		<property name="settingService"><ref bean="settingService" /></property>
+    </bean>
+	<bean id="permissionService" class="Slatwall.com.service.PermissionService">
+        <property name="DAO"><ref bean="permissionDAO" /></property>
+		<property name="accountService"><ref bean="accountService" /></property>
+		<property name="integrationService"><ref bean="integrationService" /></property>
+    </bean>
+    <bean id="productService" class="Slatwall.com.service.ProductService">
+        <property name="DAO"><ref bean="productDAO" /></property>
+		<property name="skuDAO"><ref bean="skuDAO" /></property>
+		<property name="productTypeDAO"><ref bean="productTypeDAO" /></property>
+		<property name="dataService"><ref bean="dataService" /></property>
+		<property name="contentService"><ref bean="contentService" /></property>
+		<property name="skuService"><ref bean="skuService" /></property>
+		<property name="subscriptionService"><ref bean="subscriptionService" /></property>
+		<property name="utilityFileService"><ref bean="utilityFileService" /></property>  
+        <property name="utilityTagService"><ref bean="utilityTagService" /></property>
+    </bean>
+	<bean id="priceGroupService" class="Slatwall.com.service.PriceGroupService">
+        <property name="DAO"><ref bean="PriceGroupDAO" /></property>
+		<property name="sessionService"><ref bean="SessionService" /></property>
+		<property name="skuService"><ref bean="SkuService" /></property>
+		<property name="productService"><ref bean="ProductService" /></property>
+	</bean>
+	<bean id="promotionService" class="Slatwall.com.service.PromotionService">
+        <property name="DAO"><ref bean="PromotionDAO" /></property>
+		<property name="roundingRuleService"><ref bean="roundingRuleService" /></property>
+		<property name="utilityService"><ref bean="utilityService" /></property>
+	</bean>
+	<bean id="reportService" class="Slatwall.com.service.ReportService">
+        <property name="DAO"><ref bean="ReportDAO" /></property>
+	</bean>
+	<bean id="roundingRuleService" class="Slatwall.com.service.RoundingRuleService">
+        <property name="DAO"><ref bean="RoundingRuleDAO" /></property>
+	</bean>
+	<bean id="scheduleService" class="Slatwall.com.service.ScheduleService">
+        <property name="DAO"><ref bean="ScheduleDAO" /></property>
+		<property name="taskService"><ref bean="taskService" /></property>
+    </bean>
+    <bean id="sessionService" class="Slatwall.com.service.SessionService">
+        <property name="DAO"><ref bean="SessionDAO" /></property>
+		<property name="accountService"><ref bean="accountService" /></property>
+		<property name="orderService"><ref bean="orderService" /></property>
+		<property name="utilityTagService"><ref bean="utilityTagService" /></property>
+    </bean>
+    <bean id="settingService" class="Slatwall.com.service.SettingService">
+        <property name="DAO"><ref bean="settingDAO" /></property>
+		<property name="currencyService"><ref bean="currencyService" /></property>
+		<property name="contentService"><ref bean="contentService" /></property>
+		<property name="utilityORMService"><ref bean="utilityORMService" /></property>
+		<property name="locationService"><ref bean="locationService" /></property>
+		<property name="measurementUnitService"><ref bean="measurementUnitService" /></property>
+		<property name="paymentService"><ref bean="paymentService" /></property>
+		<property name="taxService"><ref bean="taxService" /></property>
+    </bean>
+	<bean id="shippingService" class="Slatwall.com.service.ShippingService">
+        <property name="DAO"><ref bean="shippingDAO" /></property>
+		<property name="addressService"><ref bean="addressService" /></property>
+		<property name="integrationService"><ref bean="integrationService" /></property>
+    </bean>
+	<bean id="siteService" class="Slatwall.com.service.SiteService">
+        <property name="DAO"><ref bean="siteDAO" /></property>
+    </bean>
+	<bean id="skuService" class="Slatwall.com.service.SkuService">
+        <property name="DAO"><ref bean="SkuDAO" /></property>
+		<property name="optionService"><ref bean="optionService" /></property>
+		<property name="productService"><ref bean="productService" /></property>
+		<property name="subscriptionService"><ref bean="subscriptionService" /></property>
+		<property name="contentService"><ref bean="contentService" /></property>
+    </bean>
+	<bean id="stockService" class="Slatwall.com.service.StockService">
+        <property name="DAO"><ref bean="stockDAO" /></property>
+		<property name="locationService"><ref bean="locationService" /></property>
+		<property name="skuService"><ref bean="skuService" /></property>
+		<property name="typeService"><ref bean="typeService" /></property>
+		<property name="commentService"><ref bean="commentService" /></property>
+    </bean>
+    <bean id="subscriptionService" class="Slatwall.com.service.SubscriptionService">
+        <property name="DAO"><ref bean="SubscriptionDAO" /></property>
+		<property name="accessService"><ref bean="accessService" /></property>
+		<property name="orderService"><ref bean="orderService" /></property>
+		<property name="paymentService"><ref bean="paymentService" /></property>
+		<property name="emailService"><ref bean="emailService" /></property>
+		<property name="utilityEmailService"><ref bean="utilityEmailService" /></property>
+    </bean>
+	<bean id="taskService" class="Slatwall.com.service.TaskService">
+        <property name="DAO"><ref bean="taskDAO" /></property>
+		<property name="utilityTagService"><ref bean="utilityTagService" /></property>
+    </bean>
+	<bean id="taxService" class="Slatwall.com.service.TaxService">
+        <property name="DAO"><ref bean="taxDAO" /></property>
+		<property name="addressService"><ref bean="addressService" /></property>
+    </bean>
+    <bean id="typeService" class="Slatwall.com.service.TypeService">
+        <property name="DAO"><ref bean="TypeDAO" /></property>
+    </bean>
+    <bean id="termService" class="Slatwall.com.service.TermService">
+        <property name="DAO"><ref bean="TermDAO" /></property>
+    </bean>
+    <bean id="updateService" class="Slatwall.com.service.UpdateService">
+    	<property name="DAO"><ref bean="updateDAO" /></property>
+    	<property name="utilityFileService"><ref bean="utilityFileService" /></property>
+    </bean>
+    <bean id="vendorService" class="Slatwall.com.service.VendorService">
+        <property name="DAO"><ref bean="VendorDAO" /></property>
+		<property name="skuService"><ref bean="skuService" /></property>
+    </bean>
+	<bean id="vendorOrderService" class="Slatwall.com.service.VendorOrderService">
+        <property name="DAO"><ref bean="VendorOrderDAO" /></property>
+		<property name="addressService"><ref bean="addressService" /></property>
+		<property name="taxService"><ref bean="taxService" /></property>
+    </bean>
+</beans>
