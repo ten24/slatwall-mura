@@ -36,31 +36,17 @@
 Notes:
 
 --->
-<cfsilent>
-	<cfset local.version = "Unknown" />
-	<cfset local.versionFile = getDirectoryFromPath(getCurrentTemplatePath()) />
-	<cfset local.versionFile = left(local.versionFile, len(local.versionFile)-7) & "version.txt" />
-	<cfif fileExists(local.versionFile)>
-		<cfset local.version = fileRead(local.versionFile) />
-	</cfif>
-</cfsilent>
 <plugin>
-	<name>Slatwall</name>
-	<package>Slatwall</package>
+	<name>Slatwall Mura Connector</name>
+	<package>slatwall-mura</package>
 	<directoryFormat>packageOnly</directoryFormat>
 	<provider>Slatwall</provider>
-	<version><cfoutput>#local.version#</cfoutput></version>
+	<version>1.0</version>
 	<providerURL>http://www.getslatwall.com/</providerURL>
 	<category>Application</category>
-	<ormcfclocation>/com/entity/,/integrationServices/</ormcfclocation>
-	<customtagpaths>frontend/tags,tags</customtagpaths>
-	<mappings>
-		<mapping name="ValidateThis" directory="org/ValidateThis"/>
-	</mappings>
 	<settings />
 	<eventHandlers>
-		<eventHandler event="onApplicationLoad" component="integrationServices.mura.eventHandler" persist="false"/>
-		<eventHandler event="onContentEdit" component="integrationServices.mura.eventHandler" persist="false"/>
+		<eventHandler event="onApplicationLoad" component="eventHandler" persist="false"/>
 	</eventHandlers>
 	<displayObjects />
 </plugin>
