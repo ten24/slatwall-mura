@@ -44,7 +44,46 @@ Notes:
 	<version>1.0</version>
 	<providerURL>http://www.getslatwall.com/</providerURL>
 	<category>Application</category>
-	<settings />
+	<settings>
+		<setting>
+			<name>accountSyncType</name>
+			<label>Account Sync Type</label>
+			<hint>This setting will define how accounts are synced back and forth between Mura and Slatwall.  The default is "Mura System Users Only" which means that any new accounts in Slatwall will not create site members in Mura, but existing/new Mura system accounts will automatically have a linked account created in Slatwall.</hint>
+			<type>select</type>
+			<required>true</required>
+			<defaultvalue>systemUserOnly</defaultvalue>
+			<optionlist>systemUserOnly^siteUserOnly^all^none</optionlist>
+			<optionlabellist>Mura System Users Only^Mura Site Members Only^All Users^None</optionlabellist>
+		</setting>
+		<setting>
+			<name>superUserSyncFlag</name>
+			<label>Add Mura Super Users to Slatwall Super User Group</label>
+			<hint>If set to 'yes' then any S2 Super User accounts in mura will get added to the super user group in Slatwall.  This setting will only apply if the Account Sync Type is set to 'all' or 'systemUserOnly'.</hint>
+			<type>radioGroup</type>
+			<required>true</required>
+			<defaultvalue>true</defaultvalue>
+			<optionlist>true^false</optionlist>
+			<optionlabellist> Yes ^ No </optionlabellist>
+		</setting>
+		<setting>
+			<name>createDefaultPages</name>
+			<label>Create Default Pages and Templates</label>
+			<hint>If set to 'yes' then the first time the Slatwall is initiated for any site, it will automatically create pages in the site manager as well as the necessary template files in your theme.</hint>
+			<type>radioGroup</type>
+			<required>true</required>
+			<defaultvalue>true</defaultvalue>
+			<optionlist>true^false</optionlist>
+			<optionlabellist> Yes ^ No </optionlabellist>
+		</setting>
+		<setting>
+			<name>slatwallInstallPath</name>
+			<label>Slatwall Install Path</label>
+			<hint>Point this to directory where slatwall is installed.  If you don't have Slatwall installed in the directory specified the most recent stable version will be downloaded and installed.</hint>
+			<type>text</type>
+			<required>true</required>
+			<defaultvalue><cfoutput>#replace(replace(getDirectoryFromPath(getCurrentTemplatePath()),'/plugin/','/'),'\plugin\','\')#</cfoutput></defaultvalue>
+		</setting>
+	</settings>
 	<eventHandlers>
 		<eventHandler event="onApplicationLoad" component="eventHandler" persist="false"/>
 	</eventHandlers>

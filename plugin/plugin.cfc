@@ -40,8 +40,10 @@ component extends="mura.plugin.plugincfc" output="false" {
 
 	variables.config="";
 	
-	public void function init(any config) {
+	public any function init(any config) {
 		variables.config = arguments.config;
+		
+		return this;
 	}
 	
 	// On install

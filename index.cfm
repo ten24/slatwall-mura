@@ -1,2 +1,1 @@
-Mura Slatwall Connector
- 
+<cfdump var="#$.getPluginConfig()#" /> 
