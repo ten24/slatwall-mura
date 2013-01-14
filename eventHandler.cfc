@@ -73,12 +73,12 @@ Notes:
 			
 			<!--- Add the proper mappings to the cfApplication.cfm file --->
 			<cfset var oldCFApplication = "" />
-			<cffile action="read" file="/muraWRM/config/cfapplication.cfm" variable="oldCFApplication" />
+			<cffile action="read" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" variable="oldCFApplication" />
 			<cfif not findNoCase("<!---[START_SLATWALL_CONFIG]--->", oldCFApplication)>
 				<cfset var additionalCFApplicationContent = "" />
 				<cffile action="read" file="#slatwallDirectoryPath#/integrationServices/mura/setup/cfapplication.cfm" variable="additionalCFApplicationContent" />
 				<cfset additionalCFApplicationContent = replace(additionalCFApplicationContent, "{pathToSlatwallSetupOnInstall}", "#slatwallDirectoryPath#/", "all") />
-				<cffile action="append" file="/muraWRM/config/cfapplication.cfm" output="#additionalCFApplicationContent#" > 
+				<cffile action="append" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#additionalCFApplicationContent#" > 
 			</cfif> 
 				
 			<!--- De-Initialize the app so that this can be called again and load the eventHandler --->
@@ -87,12 +87,8 @@ Notes:
 			<!--- Add the eventHandler inside of the mura integration to this app --->
 			<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
 			
-			<!--- Call the onApplicationLoad on that object --->
-			<cfset slatwallEventHandler.onApplicationLoad(argumentcollection=arguments) />
-
 			<!--- Add the rest of those methods to the eventHandler --->
-			<cfset variables.pluginConfig.addEventHandler( slatwallEventHandler ) />
-			
+			<cfset variables.config.addEventHandler( slatwallEventHandler ) />
 		</cfif>
 		
 		<!--- Setup slatwall as not initialized so that it loads on next request --->
