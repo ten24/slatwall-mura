@@ -77,6 +77,7 @@ Notes:
 			<cfif not findNoCase("<!---[START_SLATWALL_CONFIG]--->", oldCFApplication)>
 				<cfset var additionalCFApplicationContent = "" />
 				<cffile action="read" file="#slatwallDirectoryPath#/integrationServices/mura/setup/cfapplication.cfm" variable="additionalCFApplicationContent" />
+				<cfset additionalCFApplicationContent = replace(additionalCFApplicationContent, "{pathToSlatwallSetupOnInstall}", "#slatwallDirectoryPath#/", "all") />
 				<cffile action="append" file="/muraWRM/config/cfapplication.cfm" output="#additionalCFApplicationContent#" > 
 			</cfif> 
 				
