@@ -1,4 +1,4 @@
-/*
+<!---
 
     Slatwall - An Open Source eCommerce Platform
     Copyright (C) 2011 ten24, LLC
@@ -35,18 +35,70 @@
 
 Notes:
 
-*/
-component extends="mura.plugin.pluginGenericEventHandler" {
+--->
+<cfcomponent extends="mura.plugin.pluginGenericEventHandler">
 	
-	variables.config="";
+	<cfset variables.config="" />
 	
-	public any function init(any config) {
-		variables.config = arguments.config;
+	<cffunction name="init" access="public" returntype="any">
+		<cfargument name="config" type="any" />
 		
-		return this;
-	}
+		<cfset variables.config = arguments.config />
+		
+		<cfreturn this />
+	</cffunction>
 	
-	public any function onApplicationLoad() {
-		// Get the Slatwall Location, and all the onApplicationLoad() in the mura integration
-	}
-}
+	<cffunction name="onApplicationLoad" access="public" returntype="any">
+		<cfargument name="$" />
+		
+		<!--- Verify that Slatwall is installed --->
+		<cfif not directoryExists(getDirectoryFromPath(getCurrentTemplatePath()) & "Slatwall")>
+			
+			<!--- Define what the Slatwall directory will be ---> 
+			<cfset slatwallDirectoryPath = "#getDirectoryFromPath(getCurrentTemplatePath())#Slatwall" /> 
+			
+			<!--- start download --->
+			<cfhttp url="https://github.com/ten24/Slatwall/archive/feature-standalone.zip" method="get" path="#getTempDirectory()#" file="slatwall.zip" />
+			
+			<!--- Unzip downloaded file --->
+			<cfset var slatwallZipDirectoryList = "" />
+			<cfzip action="unzip" destination="#getTempDirectory()#" file="#getTempDirectory()#slatwall.zip" >
+			<cfzip action="list" file="#getTempDirectory()#slatwall.zip" name="slatwallZipDirectoryList" >
+			
+			<!--- Move the directory from where it is in the temp location to this directory --->
+			<cfdirectory action="rename" directory="#getTempDirectory()##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#/" newdirectory="#slatwallDirectoryPath#" />
+			
+			<!--- Set Application Datasource in custom Slatwall config --->
+			<cffile action="write" file="#slatwallDirectoryPath#/config/custom/configApplication.cfm" output="<cfset this.datasource.name = #$.globalConfig('datasource')# />">
+			
+			<!--- Add the proper mappings to the cfApplication.cfm file --->
+			<cfset var oldCFApplication = "" />
+			<cffile action="read" file="/muraWRM/config/cfapplication.cfm" variable="oldCFApplication" />
+			<cfif not findNoCase("<!---[START_SLATWALL_CONFIG]--->", oldCFApplication)>
+				<cfset var additionalCFApplicationContent = "" />
+				<cffile action="read" file="#slatwallDirectoryPath#/integrationServices/mura/setup/cfapplication.cfm" variable="additionalCFApplicationContent" />
+				<cffile action="append" file="/muraWRM/config/cfapplication.cfm" output="#additionalCFApplicationContent#" > 
+			</cfif> 
+				
+			<!--- De-Initialize the app so that this can be called again and load the eventHandler --->
+			<cfset application.appInitialized = false />
+		<cfelse>
+			<!--- Add the eventHandler inside of the mura integration to this app --->
+			<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
+			
+			<!--- Call the onApplicationLoad on that object --->
+			<cfset slatwallEventHandler.onApplicationLoad(argumentcollection=arguments) />
+
+			<!--- Add the rest of those methods to the eventHandler --->
+			<cfset variables.pluginConfig.addEventHandler( slatwallEventHandler ) />
+			
+		</cfif>
+		
+		<!--- Setup slatwall as not initialized so that it loads on next request --->
+		<cfset application.slatwall.initialized = false />
+	</cffunction>
+	
+	<cffunction name="getCFApplicationCode">
+		
+	</cffunction>
+</cfcomponent>
