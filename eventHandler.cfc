@@ -69,7 +69,7 @@ Notes:
 			<cfdirectory action="rename" directory="#getTempDirectory()##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#/" newdirectory="#slatwallDirectoryPath#" />
 			
 			<!--- Set Application Datasource in custom Slatwall config --->
-			<cffile action="write" file="#slatwallDirectoryPath#/config/custom/configApplication.cfm" output='<cfset this.datasource.name = "#$.globalConfig('datasource')#" />'>
+			<cffile action="write" file="#slatwallDirectoryPath#/config/custom/configApplication.cfm" output='<cfset this.datasource.name = "#$.globalConfig('datasource')#" />#chr(10)##chr(13)#<cfset this.name = "#application.applicationName#" />'>
 			
 			<!--- Add the proper mappings to the cfApplication.cfm file --->
 			<cfset var oldCFApplication = "" />
