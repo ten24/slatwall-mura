@@ -1,1 +1,1 @@
-<cfdump var="#$.getPluginConfig()#" /> 
+<cflocation url="Slatwall" addtoken="false" />
