@@ -51,37 +51,6 @@ Notes:
 	<cffunction name="onApplicationLoad" access="public" returntype="any">
 		<cfargument name="$" />
 		
-		<!--- Verify that Slatwall is installed --->
-		<cfif not directoryExists(getDirectoryFromPath(getCurrentTemplatePath()) & "Slatwall")>
-			
-			<!--- Define what the Slatwall directory will be ---> 
-			<cfset slatwallDirectoryPath = "#getDirectoryFromPath(getCurrentTemplatePath())#Slatwall" /> 
-			
-			<!--- start download --->
-			<cfhttp url="https://github.com/ten24/Slatwall/archive/feature-standalone.zip" method="get" path="#getTempDirectory()#" file="slatwall.zip" />
-			
-			<!--- Unzip downloaded file --->
-			<cfset var slatwallZipDirectoryList = "" />
-			<cfzip action="unzip" destination="#getTempDirectory()#" file="#getTempDirectory()#slatwall.zip" >
-			<cfzip action="list" file="#getTempDirectory()#slatwall.zip" name="slatwallZipDirectoryList" >
-			
-			<!--- Move the directory from where it is in the temp location to this directory --->
-			<cfdirectory action="rename" directory="#getTempDirectory()##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#/" newdirectory="#slatwallDirectoryPath#" />
-			
-			<!--- Set Application Datasource in custom Slatwall config --->
-			<cffile action="write" file="#slatwallDirectoryPath#/config/custom/configApplication.cfm" output='<cfset this.datasource.name = "#$.globalConfig('datasource')#" />#chr(13)#<cfset this.name = "#application.applicationName#" />'>
-			
-			<!--- Add the proper mappings to the cfApplication.cfm file --->
-			<cfset var oldCFApplication = "" />
-			<cffile action="read" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" variable="oldCFApplication" />
-			<cfif not findNoCase("<!---[START_SLATWALL_CONFIG]--->", oldCFApplication)>
-				<cfset var additionalCFApplicationContent = "" />
-				<cffile action="read" file="#slatwallDirectoryPath#/integrationServices/mura/setup/cfapplication.cfm" variable="additionalCFApplicationContent" />
-				<cfset additionalCFApplicationContent = replace(additionalCFApplicationContent, "{pathToSlatwallSetupOnInstall}", "#slatwallDirectoryPath#", "all") />
-				<cffile action="append" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#additionalCFApplicationContent#" > 
-			</cfif> 
-		</cfif>
-		
 		<!--- Add the eventHandler inside of the mura integration to this app --->
 		<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
 		
