@@ -80,19 +80,29 @@ Notes:
 				<cfset additionalCFApplicationContent = replace(additionalCFApplicationContent, "{pathToSlatwallSetupOnInstall}", "#slatwallDirectoryPath#", "all") />
 				<cffile action="append" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#additionalCFApplicationContent#" > 
 			</cfif> 
-				
-			<!--- De-Initialize the app so that this can be called again and load the eventHandler --->
-			<cfset application.appInitialized = false />
-		<cfelse>
-			<!--- Add the eventHandler inside of the mura integration to this app --->
-			<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
-			
-			<!--- Add the rest of those methods to the eventHandler --->
-			<cfset variables.config.addEventHandler( slatwallEventHandler ) />
 		</cfif>
 		
-		<!--- Setup slatwall as not initialized so that it loads on next request --->
-		<cfset application.slatwall.initialized = false />
+		<!--- Add the eventHandler inside of the mura integration to this app --->
+		<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
+		
+		<!--- Add the rest of those methods to the eventHandler --->
+		<cfset variables.config.addEventHandler( slatwallEventHandler ) />
+		
+		<!--- Reload the slatwall application --->
+		<cfset getSlatwallApplication().reloadApplication() />
+		
+		<!--- Do a gloabl request setup so that we know the application get setup --->
+		<cfset getSlatwallApplication().setupGlobalRequest() />
+		
+		<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
+		<cfset slatwallEventHandler.verifySetup( $=arguments.$, config=variables.config ) />
+	</cffunction>
+	
+	<cffunction name="getSlatwallApplication" returntype="any">
+		<cfif structKeyExists(variables, "getSlatwallApplication")>
+			<cfset variables.slatwallApplication = createObject("component", "Slatwall.Application") />
+		</cfif>
+		<cfreturn variables.slatwallApplication />
 	</cffunction>
 	
 </cfcomponent>
