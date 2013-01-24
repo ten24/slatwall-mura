@@ -75,6 +75,7 @@ Notes:
 			<optionlist>true^false</optionlist>
 			<optionlabellist> Yes ^ No </optionlabellist>
 		</setting>
+		<!--
 		<setting>
 			<name>slatwallInstallPath</name>
 			<label>Slatwall Install Path</label>
@@ -83,6 +84,7 @@ Notes:
 			<required>true</required>
 			<defaultvalue><cfoutput>#replace(replace(getDirectoryFromPath(getCurrentTemplatePath()),'/plugin/','/'),'\plugin\','\')#</cfoutput></defaultvalue>
 		</setting>
+		-->
 	</settings>
 	<eventHandlers>
 		<eventHandler event="onApplicationLoad" component="eventHandler" persist="false"/>
