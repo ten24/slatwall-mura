@@ -51,20 +51,66 @@ Notes:
 	<cffunction name="onApplicationLoad" access="public" returntype="any">
 		<cfargument name="$" />
 		
-		<!--- Add the eventHandler inside of the mura integration to this app --->
-		<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
+		<cfif (not structKeyExists(getAppMeta(), "Mappings") or not structKeyExists(getAppMeta().Mappings, "/Slatwall") and not structKeyExists(application, "slatwallReset"))>
+			
+			<cfset application.appInitialized=false />
+			<cfset application.slatwallReset=true />
+			
+			<cfset var slatwallDirectoryPath = "#getDirectoryFromPath(getCurrentTemplatePath())#/Slatwall" />
 		
-		<!--- Add the rest of those methods to the eventHandler --->
-		<cfset variables.config.addEventHandler( slatwallEventHandler ) />
+			<!--- Verify that Slatwall is installed --->
+			<cfif not directoryExists(slatwallDirectoryPath)>
+				 
+				<!--- start download --->
+				<cfhttp url="https://github.com/ten24/Slatwall/archive/feature-standalone.zip" method="get" path="#getTempDirectory()#" file="slatwall.zip" />
+				
+				<!--- Unzip downloaded file --->
+				<cfset var slatwallZipDirectoryList = "" />
+				<cfzip action="unzip" destination="#getTempDirectory()#" file="#getTempDirectory()#slatwall.zip" >
+				<cfzip action="list" file="#getTempDirectory()#slatwall.zip" name="slatwallZipDirectoryList" >
+				
+				<!--- Move the directory from where it is in the temp location to this directory --->
+				<cfdirectory action="rename" directory="#getTempDirectory()##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#/" newdirectory="#slatwallDirectoryPath#" />
+				
+				<!--- Set Application Datasource in custom Slatwall config --->
+				<cffile action="write" file="#slatwallDirectoryPath#/config/custom/configApplication.cfm" output='<cfset this.datasource.name = "#application.configBean.getDatasource()#" />#chr(13)#<cfset this.name = "#application.applicationName#" />'>
+			</cfif>
+			
+			<!--- Add the proper mappings to the cfApplication.cfm file --->
+			<cfset var oldCFApplication = "" />
+			<cffile action="read" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" variable="oldCFApplication" />
+			<cfif not findNoCase("<!---[START_SLATWALL_CONFIG]--->", oldCFApplication)>
+				<cfset var additionalCFApplicationContent = "" />
+				<cffile action="read" file="#slatwallDirectoryPath#/integrationServices/mura/setup/cfapplication.cfm" variable="additionalCFApplicationContent" />
+				<cfset additionalCFApplicationContent = replace(additionalCFApplicationContent, "{pathToSlatwallSetupOnInstall}", "#slatwallDirectoryPath#", "all") />
+				<cffile action="append" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#additionalCFApplicationContent#" > 
+			</cfif>
+			
+			<!--- Redirect the user to the same page they are on --->
+			<cfparam name="session.siteid" default="default" />
+			<cflocation url="#application.configBean.getContext()#/admin?muraAction=csettings.list&siteID=#session.siteID#" addtoken="false" />
+			
+		<cfelseif structKeyExists(getAppMeta(), "Mappings") and structKeyExists(getAppMeta().Mappings, "/Slatwall")>
+			
+			
+			<!--- Add the eventHandler inside of the mura integration to this app --->
+			<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
+			
+			<!--- Add the rest of those methods to the eventHandler --->
+			<cfset variables.config.addEventHandler( slatwallEventHandler ) />
+			
+			<!--- Reload the slatwall application --->
+			<cfset getSlatwallApplication().reloadApplication() />
+			
+			<!--- Do a gloabl request setup so that we know the application get setup --->
+			<cfset getSlatwallApplication().setupGlobalRequest() />
+			
+			<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
+			<cfset slatwallEventHandler.verifySetup( $=arguments.$, config=variables.config ) />
+			
+		</cfif>
 		
-		<!--- Reload the slatwall application --->
-		<cfset getSlatwallApplication().reloadApplication() />
-		
-		<!--- Do a gloabl request setup so that we know the application get setup --->
-		<cfset getSlatwallApplication().setupGlobalRequest() />
-		
-		<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
-		<cfset slatwallEventHandler.verifySetup( $=arguments.$, config=variables.config ) />
+		<cfset structDelete(application, "slatwallReset") />
 	</cffunction>
 	
 	<cffunction name="getSlatwallApplication" returntype="any">
@@ -72,6 +118,14 @@ Notes:
 			<cfset variables.slatwallApplication = createObject("component", "Slatwall.Application") />
 		</cfif>
 		<cfreturn variables.slatwallApplication />
+	</cffunction>
+	
+	<cffunction name="getAppMeta">
+		<cfif listFirst(server.coldfusion.productVersion,",") gte 10 >
+			<cfreturn getApplicationMetadata() />
+		<cfelse>
+			<cfreturn application.getApplicationSettings() />
+		</cfif>
 	</cffunction>
 	
 </cfcomponent>
