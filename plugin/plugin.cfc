@@ -60,6 +60,25 @@ Notes:
 	
 	<cffunction name="delete">
 		
+		<!--- Remove Slatwall settings from cfApplication.cfm file --->
+		<cfset var newCFApplication = "" />
+		<cfset var line = "" />
+		<cfset var addLine = true />
+		
+		<cfloop file="#expandPath('/muraWRM/config/cfapplication.cfm')#" index="line" >
+			<cfif findNoCase("<!---[START_SLATWALL_CONFIG]--->", line)>
+				<cfset addLine = false />
+			</cfif>
+			<cfif addLine>
+				<cfset listAppend(newCFApplication, line, chr(13)) />
+			</cfif>
+			<cfif findNoCase("<!---[END_SLATWALL_CONFIG]--->", line)>
+				<cfset addLine = true />
+			</cfif>
+		</cfloop>
+		
+		<cffile action="write" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#additionalCFApplicationContent#" > 
+			
 		<cfset application.appInitialized=false />
 	</cffunction>
 	
