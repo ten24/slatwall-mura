@@ -56,8 +56,8 @@ Notes:
 			<cfset application.appInitialized=false />
 			<cfset application.slatwallReset=true />
 			
-			<cfset var slatwallDirectoryPath = "#getDirectoryFromPath(getCurrentTemplatePath())#/Slatwall" />
-		
+			<cfset var slatwallDirectoryPath = "#getDirectoryFromPath(getCurrentTemplatePath())#Slatwall" />
+			
 			<!--- Verify that Slatwall is installed --->
 			<cfif not directoryExists(slatwallDirectoryPath)>
 				 
@@ -91,7 +91,6 @@ Notes:
 			<cflocation url="#application.configBean.getContext()#/admin?muraAction=csettings.list&siteID=#session.siteID#" addtoken="false" />
 			
 		<cfelseif structKeyExists(getAppMeta(), "Mappings") and structKeyExists(getAppMeta().Mappings, "/Slatwall")>
-			
 			
 			<!--- Add the eventHandler inside of the mura integration to this app --->
 			<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />

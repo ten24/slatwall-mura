@@ -77,7 +77,7 @@ Notes:
 			</cfif>
 		</cfloop>
 		
-		<cffile action="write" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#additionalCFApplicationContent#" > 
+		<cffile action="write" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#newCFApplication#" > 
 			
 		<cfset application.appInitialized=false />
 	</cffunction>
