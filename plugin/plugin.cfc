@@ -70,7 +70,7 @@ Notes:
 				<cfset addLine = false />
 			</cfif>
 			<cfif addLine>
-				<cfset listAppend(newCFApplication, line, chr(13)) />
+				<cfset newCFApplication = listAppend(newCFApplication, line, chr(13)) />
 			</cfif>
 			<cfif findNoCase("<!---[END_SLATWALL_CONFIG]--->", line)>
 				<cfset addLine = true />
