@@ -1,1 +1,1 @@
-<cflocation url="Slatwall" addtoken="false" />
+<cflocation url="#application.configBean.getContext()#/Slatwall" addtoken="false" />
