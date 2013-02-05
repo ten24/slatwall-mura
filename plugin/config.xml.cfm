@@ -88,6 +88,9 @@ Notes:
 	</settings>
 	<eventHandlers>
 		<eventHandler event="onApplicationLoad" component="eventHandler" persist="false"/>
+		<eventHandler event="onContentEdit" component="eventHandler" persist="false"/>
+		<eventHandler event="onAfterGlobalLogout" component="eventHandler" persist="false"/>
+		<eventHandler event="onAfterSiteLogout" component="eventHandler" persist="false"/>
 	</eventHandlers>
 	<displayObjects />
 </plugin>

@@ -92,11 +92,8 @@ Notes:
 			
 		<cfelseif structKeyExists(getAppMeta(), "Mappings") and structKeyExists(getAppMeta().Mappings, "/Slatwall")>
 			
-			<!--- Add the eventHandler inside of the mura integration to this app --->
-			<cfset var slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
-			
 			<!--- Add the rest of those methods to the eventHandler --->
-			<cfset variables.config.addEventHandler( slatwallEventHandler ) />
+			<cfset variables.config.addEventHandler( getSlatwallEventHandler() ) />
 			
 			<!--- Reload the slatwall application --->
 			<cfset getSlatwallApplication().reloadApplication() />
@@ -105,15 +102,34 @@ Notes:
 			<cfset getSlatwallApplication().setupGlobalRequest() />
 			
 			<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
-			<cfset slatwallEventHandler.verifySetup( $=arguments.$, config=variables.config ) />
+			<cfset getSlatwallEventHandler().verifySetup( $=arguments.$, config=variables.config ) />
 			
 		</cfif>
 		
 		<cfset structDelete(application, "slatwallReset") />
 	</cffunction>
 	
+	<cffunction name="onContentEdit" access="public" returntype="any">
+		<cfset getSlatwallEventHandler().onContentEdit() />
+	</cffunction>
+	
+	<cffunction name="onAfterGlobalLogout" access="public" returntype="any">
+		<cfset getSlatwallEventHandler().onAfterGlobalLogout() />
+	</cffunction>
+	
+	<cffunction name="onAfterSiteLogout" access="public" returntype="any">
+		<cfset getSlatwallEventHandler().onAfterSiteLogout() />
+	</cffunction>
+	
+	<cffunction name="getSlatwallEventHandler" returntype="any">
+		<cfif not structKeyExists(variables, "slatwallEventHandler")>
+			<cfset variables.slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
+		</cfif>
+		<cfreturn variables.slatwallEventHandler />
+	</cffunction>
+	
 	<cffunction name="getSlatwallApplication" returntype="any">
-		<cfif structKeyExists(variables, "getSlatwallApplication")>
+		<cfif not structKeyExists(variables, "slatwallApplication")>
 			<cfset variables.slatwallApplication = createObject("component", "Slatwall.Application") />
 		</cfif>
 		<cfreturn variables.slatwallApplication />
