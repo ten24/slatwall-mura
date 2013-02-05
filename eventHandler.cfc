@@ -113,14 +113,6 @@ Notes:
 		<cfset getSlatwallEventHandler().onContentEdit() />
 	</cffunction>
 	
-	<cffunction name="onAfterGlobalLogout" access="public" returntype="any">
-		<cfset getSlatwallEventHandler().onAfterGlobalLogout() />
-	</cffunction>
-	
-	<cffunction name="onAfterSiteLogout" access="public" returntype="any">
-		<cfset getSlatwallEventHandler().onAfterSiteLogout() />
-	</cffunction>
-	
 	<cffunction name="getSlatwallEventHandler" returntype="any">
 		<cfif not structKeyExists(variables, "slatwallEventHandler")>
 			<cfset variables.slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.model.handler.MuraEventHandler") />
