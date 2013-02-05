@@ -81,7 +81,7 @@ Notes:
 			<cffile action="read" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" variable="oldCFApplication" />
 			<cfif not findNoCase("<!---[START_SLATWALL_CONFIG]--->", oldCFApplication)>
 				<cfset var additionalCFApplicationContent = "" />
-				<cffile action="read" file="#slatwallDirectoryPath#/integrationServices/mura/setup/cfapplication.cfm" variable="additionalCFApplicationContent" />
+				<cffile action="read" file="#slatwallDirectoryPath#/integrationServices/mura/config/setup/cfapplication.cfm" variable="additionalCFApplicationContent" />
 				<cfset additionalCFApplicationContent = replace(additionalCFApplicationContent, "{pathToSlatwallSetupOnInstall}", "#slatwallDirectoryPath#", "all") />
 				<cffile action="append" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#additionalCFApplicationContent#"> 
 			</cfif>
@@ -123,7 +123,7 @@ Notes:
 	
 	<cffunction name="getSlatwallEventHandler" returntype="any">
 		<cfif not structKeyExists(variables, "slatwallEventHandler")>
-			<cfset variables.slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.handler.eventHandler") />
+			<cfset variables.slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.model.handler.MuraEventHandler") />
 		</cfif>
 		<cfreturn variables.slatwallEventHandler />
 	</cffunction>
