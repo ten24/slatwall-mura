@@ -98,11 +98,8 @@ Notes:
 			<!--- Reload the slatwall application --->
 			<cfset getSlatwallApplication().reloadApplication() />
 			
-			<!--- Do a gloabl request setup so that we know the application get setup --->
-			<cfset getSlatwallApplication().setupGlobalRequest() />
-			
 			<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
-			<cfset getSlatwallEventHandler().verifySetup( $=arguments.$, config=variables.config ) />
+			<cfset getSlatwallEventHandler().verifySetup( $=arguments.$ ) />
 			
 		</cfif>
 		
