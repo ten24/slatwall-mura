@@ -37,7 +37,7 @@ Notes:
 
 --->
 <plugin>
-	<name>Slatwall Mura Connector</name>
+	<name>Slatwall</name>
 	<package>slatwall-mura</package>
 	<directoryFormat>packageOnly</directoryFormat>
 	<provider>Slatwall</provider>
