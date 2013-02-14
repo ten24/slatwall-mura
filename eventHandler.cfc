@@ -95,12 +95,8 @@ Notes:
 			<!--- Add the rest of those methods to the eventHandler --->
 			<cfset variables.config.addEventHandler( getSlatwallEventHandler() ) />
 			
-			<!--- Reload the slatwall application --->
-			<cfset getSlatwallApplication().reloadApplication() />
-			
 			<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
 			<cfset getSlatwallEventHandler().verifySetup( $=arguments.$ ) />
-			
 		</cfif>
 		
 		<cfset structDelete(application, "slatwallReset") />
