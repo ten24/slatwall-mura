@@ -62,7 +62,7 @@ Notes:
 			<cfif not directoryExists(slatwallDirectoryPath)>
 				 
 				<!--- start download --->
-				<cfhttp url="https://github.com/ten24/Slatwall/archive/feature-standalone.zip" method="get" path="#getTempDirectory()#" file="slatwall.zip" />
+				<cfhttp url="https://github.com/ten24/Slatwall/archive/rc3.zip" method="get" path="#getTempDirectory()#" file="slatwall.zip" />
 				
 				<!--- Unzip downloaded file --->
 				<cfset var slatwallZipDirectoryList = "" />
