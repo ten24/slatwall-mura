@@ -56,7 +56,7 @@ Notes:
 			<cfset application.appInitialized=false />
 			<cfset application.slatwallReset=true />
 			
-			<cfset var slatwallDirectoryPath = "#getDirectoryFromPath(expandPath('/'))#Slatwall" />
+			<cfset var slatwallDirectoryPath = "#replace(getDirectoryFromPath(expandPath('/')),'\','/','all')#Slatwall" />
 			
 			<!--- Verify that Slatwall is installed --->
 			<cfif not directoryExists(slatwallDirectoryPath)>
