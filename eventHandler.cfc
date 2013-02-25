@@ -56,7 +56,7 @@ Notes:
 			<cfset application.appInitialized=false />
 			<cfset application.slatwallReset=true />
 			
-			<cfset var slatwallDirectoryPath = "#replace(getDirectoryFromPath(expandPath('/')),'\','/','all')#Slatwall" />
+			<cfset var slatwallDirectoryPath = "#getDirectoryFromPath(expandPath('/'))#Slatwall" />
 			
 			<!--- Verify that Slatwall is installed --->
 			<cfif not directoryExists(slatwallDirectoryPath)>
@@ -70,7 +70,7 @@ Notes:
 				<cfzip action="list" file="#getTempDirectory()#slatwall.zip" name="slatwallZipDirectoryList" >
 				
 				<!--- Move the directory from where it is in the temp location to this directory --->
-				<cfdirectory action="rename" directory="#getTempDirectory()##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#/" newdirectory="#slatwallDirectoryPath#" />
+				<cfdirectory action="rename" directory="#getTempDirectory()##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#" newdirectory="#slatwallDirectoryPath#" />
 				
 				<!--- Set Application Datasource in custom Slatwall config --->
 				<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfset this.datasource.name = "#application.configBean.getDatasource()#" />#chr(13)#<cfset this.name = "#application.applicationName#" />'>
