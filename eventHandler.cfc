@@ -95,6 +95,9 @@ Notes:
 			<!--- Add the rest of those methods to the eventHandler --->
 			<cfset variables.config.addEventHandler( getSlatwallEventHandler() ) />
 			
+			<!--- Call Reload on the Slatwall application so that the verify setup re-instantiates --->
+			<cfset getSlatwallApplication().reloadApplication() />
+			
 			<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
 			<cfset getSlatwallEventHandler().verifySetup( $=arguments.$ ) />
 		</cfif>
