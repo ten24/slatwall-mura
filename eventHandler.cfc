@@ -89,6 +89,7 @@ Notes:
 			
 			<!--- Redirect the user to the same page they are on --->
 			<cfparam name="session.siteid" default="default" />
+			<cfset applicationStop() />
 			<cflocation url="#application.configBean.getContext()#/admin?muraAction=csettings.list&siteID=#session.siteID#" addtoken="false" />
 			
 		<cfelseif structKeyExists(getAppMeta(), "Mappings") and structKeyExists(getAppMeta().Mappings, "/Slatwall")>
