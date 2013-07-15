@@ -107,7 +107,7 @@ Notes:
 	</cffunction>
 	
 	<cffunction name="onContentEdit" access="public" returntype="any">
-		<cfset getSlatwallEventHandler().onContentEdit() />
+		<cfset getSlatwallEventHandler().onContentEdit( argumentcollection=arguments ) />
 	</cffunction>
 	
 	<cffunction name="getSlatwallEventHandler" returntype="any">
