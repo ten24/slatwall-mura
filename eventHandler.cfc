@@ -56,7 +56,8 @@ Notes:
 			<cfset application.appInitialized=false />
 			<cfset application.slatwallReset=true />
 			
-			<cfset var slatwallDirectoryPath = "#getDirectoryFromPath(expandPath('/'))#Slatwall" />
+			<cfset var muraContext = application.configBean.getContext() />
+			<cfset var slatwallDirectoryPath = expandPath('#muraContext#/Slatwall') />
 			
 			<!--- Verify that Slatwall is installed --->
 			<cfif not directoryExists(slatwallDirectoryPath)>
@@ -89,7 +90,7 @@ Notes:
 			<!--- Redirect the user to the same page they are on --->
 			<cfparam name="session.siteid" default="default" />
 			<cfset applicationStop() />
-			<cflocation url="#application.configBean.getContext()#/admin?muraAction=csettings.list&siteID=#session.siteID#" addtoken="false" />
+			<cflocation url="#muraContext#/admin?muraAction=csettings.list&siteID=#session.siteID#" addtoken="false" />
 			
 		<cfelseif structKeyExists(getAppMeta(), "Mappings") and structKeyExists(getAppMeta().Mappings, "/Slatwall")>
 			
