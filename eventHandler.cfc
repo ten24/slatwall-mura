@@ -87,6 +87,32 @@ Notes:
 				<cffile action="append" file="#expandPath('/muraWRM/config/cfapplication.cfm')#" output="#additionalCFApplicationContent#"> 
 			</cfif>
 			
+			<!--- Run any pre-update scripts --->
+			<cfif not fileExists("#slatwallDirectoryPath#/custom/config/lastFullUpdate.txt.cfm") or not fileExists("#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm")>
+				<cfset var preUpdatesRun = "" />
+				<cfset var preUpdateFiles = "" />
+				
+					
+				<cfif not fileExists("#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm")>
+					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm" output="" />
+				</cfif>
+				
+				<cffile action="read" file="#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm" variable="preUpdatesRun" />
+				
+				<cfdirectory action="list" directory="#slatwallDirectoryPath#/config/scripts/preupdate" name="preUpdateFiles" />
+				
+				<cfloop query="preUpdateFiles">
+					<cfset var thisFilename = preUpdateFiles.name />
+					
+					<cfif not listFindNoCase(preUpdatesRun, thisFilename)>
+						<cfinclide template="../../Slatwall/config/scripts/preupdate/#thisFilename#" />
+						<cfset preUpdatesRun = listAppend(preUpdatesRun, thisFilename) />
+					</cfif>
+				</cfloop>
+				
+				<cffile action="write" file="#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm" output="#preUpdatesRun#" /> 
+			</cfif>
+			
 			<!--- Redirect the user to the same page they are on --->
 			<cfparam name="session.siteid" default="default" />
 			<cfset applicationStop() />
