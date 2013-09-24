@@ -92,6 +92,17 @@ Notes:
 				<cfset var preUpdatesRun = "" />
 				<cfset var preUpdateFiles = "" />
 				
+				<cfif application.configBean.getDbType() eq "mssql">
+					<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />	
+				<cfelseif application.configBean.getDbType() eq "mysql">
+					<cfset this.ormSettings.dialect = "MySQL" />
+				<cfelseif application.configBean.getDbType() eq "oracle">
+					<cfset this.ormSettings.dialect = "Oracle10g" />
+				</cfif>
+				
+				<cfset this.datasource.name = application.configBean.getDatasource() />
+				<cfset this.datasource.username = application.configBean.getDBUsername() />
+				<cfset this.datasource.password = application.configBean.getDBPassword() />
 					
 				<cfif not fileExists("#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm")>
 					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm" output="" />
@@ -105,7 +116,7 @@ Notes:
 					<cfset var thisFilename = preUpdateFiles.name />
 					
 					<cfif not listFindNoCase(preUpdatesRun, thisFilename)>
-						<cfinclide template="../../Slatwall/config/scripts/preupdate/#thisFilename#" />
+						<cfinclude template="../../Slatwall/config/scripts/preupdate/#thisFilename#" />
 						<cfset preUpdatesRun = listAppend(preUpdatesRun, thisFilename) />
 					</cfif>
 				</cfloop>
