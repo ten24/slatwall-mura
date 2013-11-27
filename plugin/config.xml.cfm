@@ -41,7 +41,7 @@ Notes:
 	<package>slatwall-mura</package>
 	<directoryFormat>packageOnly</directoryFormat>
 	<provider>Slatwall</provider>
-	<version>1.1</version>
+	<version>1.2</version>
 	<providerURL>http://www.getslatwall.com/</providerURL>
 	<category>Application</category>
 	<settings>
