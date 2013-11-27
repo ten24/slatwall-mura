@@ -57,7 +57,7 @@ Notes:
 			<cfset application.slatwallReset=true />
 			
 			<cfset var muraContext = application.configBean.getContext() />
-			<cfset var slatwallDirectoryPath = expandPath('#muraContext#/Slatwall') />
+			<cfset var slatwallDirectoryPath = expandPath('/') & "Slatwall" />
 			
 			<!--- Verify that Slatwall is installed --->
 			<cfif not directoryExists(slatwallDirectoryPath)>
