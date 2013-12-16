@@ -145,7 +145,9 @@ Notes:
 	</cffunction>
 	
 	<cffunction name="onContentEdit" access="public" returntype="any">
-		<cfset getSlatwallEventHandler().onContentEdit( argumentcollection=arguments ) />
+		<cfif getBean('configBean').getVersion() lt 6.1> 
+			<cfset getSlatwallEventHandler().onContentEdit( argumentcollection=arguments ) />
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="getSlatwallEventHandler" returntype="any">
