@@ -73,6 +73,9 @@ Notes:
 				<!--- Move the directory from where it is in the temp location to this directory --->
 				<cfdirectory action="rename" directory="#getDirectoryFromPath(expandPath('/'))##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#" newdirectory="#slatwallDirectoryPath#" />
 				
+				<!--- Delete the meta directory --->
+				<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
+				
 				<!--- Set Application Datasource in custom Slatwall config --->
 				<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)#<cfinclude template="../../../plugins/mappings.cfm" />'>
 				
