@@ -55,6 +55,7 @@ Notes:
 			
 			<cfset application.appInitialized=false />
 			<cfset application.slatwallReset=true />
+			<cfset var zipName  = 'slatwall-latest'/> 	
 			
 			<cfset var muraContext = application.configBean.getContext() />
 			<cfset var slatwallDirectoryPath = expandPath('#muraContext#/') & "Slatwall" />
@@ -70,7 +71,7 @@ Notes:
 			
 			<!--- Verify that Slatwall is installed --->
 			<cfif not directoryExists(slatwallDirectoryPath)>
-				 
+								 
 				<!--- start download of zip & hash --->
 				<cfhttp url="#downloadURL#" method="get" path="#getTempDirectory()#" file="#downloadFileName#" throwonerror="true" />
 				<cfhttp url="#downloadHashURL#" method="get" path="#getTempDirectory()#" file="#downloadHashFileName#" throwonerror="true" />
@@ -81,13 +82,10 @@ Notes:
 	
 				<cfif downloadedZipHash eq hashFileValue>
 					
+					<cfdirectory action="create" directory="#slatwallDirectoryPath#">
+
 					<!--- Unzip downloaded file --->
-					<cfset var slatwallZipDirectoryList = "" />
-					<cfzip action="unzip" destination="#getDirectoryFromPath(expandPath('/'))#" file="#getTempDirectory()##downloadFileName#" >
-					<cfzip action="list" file="#getTempDirectory()##downloadFileName#" name="slatwallZipDirectoryList" >
-					
-					<!--- Move the directory from where it is in the temp location to this directory --->
-					<cfdirectory action="rename" directory="#getDirectoryFromPath(expandPath('/'))##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#" newdirectory="#slatwallDirectoryPath#" />
+					<cfzip action="unzip" destination="#slatwallDirectoryPath#" file="#getTempDirectory()##downloadFileName#" >
 					
 					<!--- Delete the meta directory --->
 					<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
