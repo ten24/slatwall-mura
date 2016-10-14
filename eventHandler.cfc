@@ -55,30 +55,45 @@ Notes:
 			
 			<cfset application.appInitialized=false />
 			<cfset application.slatwallReset=true />
+			<cfset var zipName  = 'slatwall-latest'/> 	
 			
 			<cfset var muraContext = application.configBean.getContext() />
 			<cfset var slatwallDirectoryPath = expandPath('#muraContext#/') & "Slatwall" />
+			<cfset var downloadURL = "https://s3.amazonaws.com/slatwall-releases/#zipName#.zip" />
+			<cfset var downloadHashURL = "https://s3.amazonaws.com/slatwall-releases/#zipName#.md5.txt" />
+			<cfset var slatwallRootPath = expandPath("/Slatwall") />
+			<cfset var downloadUUID = createUUID() />
+			<cfset var downloadFileName = "slatwall-#downloadUUID#.zip" />
+			<cfset var downloadHashFileName = "slatwall-#downloadUUID#.md5.txt" />
+			<cfset var deleteDestinationContentExclusionList = '/.git,/apps,/integrationServices,/custom,/WEB-INF,/.project,/setting.xml,/.htaccess,/web.config,/.settings,/.gitignore' />
+			<cfset var copyContentExclusionList = "" />
+			<cfset var slatwallDirectoryList = "" />
 			
 			<!--- Verify that Slatwall is installed --->
 			<cfif not directoryExists(slatwallDirectoryPath)>
-				 
-				<!--- start download --->
-				<cfhttp url="https://github.com/ten24/Slatwall/archive/master.zip" method="get" path="#getTempDirectory()#" file="slatwall.zip" />
+								 
+				<!--- start download of zip & hash --->
+				<cfhttp url="#downloadURL#" method="get" path="#getTempDirectory()#" file="#downloadFileName#" throwonerror="true" />
+				<cfhttp url="#downloadHashURL#" method="get" path="#getTempDirectory()#" file="#downloadHashFileName#" throwonerror="true" />
+	
+				<!--- Get the MD5 hash of the downloaded file --->
+				<cfset var downloadedZipHash = hash(fileReadBinary("#getTempDirectory()##downloadFileName#"), "MD5") />
+				<cfset var hashFileValue = listFirst(fileRead("#getTempDirectory()##downloadHashFileName#"), " ") />
+	
+				<cfif downloadedZipHash eq hashFileValue>
+					
+					<cfdirectory action="create" directory="#slatwallDirectoryPath#">
+
+					<!--- Unzip downloaded file --->
+					<cfzip action="unzip" destination="#slatwallDirectoryPath#" file="#getTempDirectory()##downloadFileName#" >
+					
+					<!--- Delete the meta directory --->
+					<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
+					
+					<!--- Set Application Datasource in custom Slatwall config --->
+					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)#<cfinclude template="../../../plugins/mappings.cfm" />'>
 				
-				<!--- Unzip downloaded file --->
-				<cfset var slatwallZipDirectoryList = "" />
-				<cfzip action="unzip" destination="#getDirectoryFromPath(expandPath('/'))#" file="#getTempDirectory()#slatwall.zip" >
-				<cfzip action="list" file="#getTempDirectory()#slatwall.zip" name="slatwallZipDirectoryList" >
-				
-				<!--- Move the directory from where it is in the temp location to this directory --->
-				<cfdirectory action="rename" directory="#getDirectoryFromPath(expandPath('/'))##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#" newdirectory="#slatwallDirectoryPath#" />
-				
-				<!--- Delete the meta directory --->
-				<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
-				
-				<!--- Set Application Datasource in custom Slatwall config --->
-				<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)#<cfinclude template="../../../plugins/mappings.cfm" />'>
-				
+				</cfif>
 			</cfif>
 			
 			<!--- Add the proper mappings to the cfApplication.cfm file --->
