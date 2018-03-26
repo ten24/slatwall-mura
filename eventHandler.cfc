@@ -153,7 +153,6 @@ Notes:
 			<cfset variables.config.addEventHandler( getSlatwallEventHandler() ) />
 			
 			<!--- Call Reload on the Slatwall application so that the verify setup re-instantiates --->
-			<cfset getSlatwallApplication().onApplicationStart() />
 			<cfset getSlatwallApplication().reloadApplication() />
 			
 			<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
@@ -179,9 +178,6 @@ Notes:
 	<cffunction name="getSlatwallApplication" returntype="any">
 		<cfif not structKeyExists(variables, "slatwallApplication")>
 			<cfset variables.slatwallApplication = createObject("component", "Slatwall.Application") />
-			<cfset variables.slatwallApplication.onApplicationStart()/>
-			<cfset variables.slatwallApplication.verifyApplicationSetup(true,true)/>
-			<cfset variables.slatwallApplication.bootstrap()/>
 		</cfif>
 		<cfreturn variables.slatwallApplication />
 	</cffunction>
