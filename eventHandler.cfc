@@ -154,7 +154,8 @@ Notes:
 			
 			<!--- Call Reload on the Slatwall application so that the verify setup re-instantiates --->
 			<cfset getSlatwallApplication().onApplicationStart() />
-			<cfset getSlatwallApplication().reloadApplication() />
+			<cfset getSlatwallApplication().getHibachiScope().setApplicationValue('initialized',false) />
+			<cfset getSlatwallApplication().bootstrap() />
 			
 			<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
 			<cfset getSlatwallEventHandler().verifySetup( $=arguments.$ ) />
@@ -178,9 +179,6 @@ Notes:
 	
 	<cffunction name="getSlatwallApplication" returntype="any">
 		<cfset variables.slatwallApplication = createObject("component", "Slatwall.Application") />
-		<cfset variables.slatwallApplication.onApplicationStart()/>
-		<cfset getSlatwallApplication().getHibachiScope().setApplicationValue('initialized',false) />
-		<cfset getSlatwallApplication().bootstrap() />
 		<cfreturn variables.slatwallApplication />
 	</cffunction>
 	
