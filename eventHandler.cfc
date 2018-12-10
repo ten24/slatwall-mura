@@ -91,7 +91,7 @@ Notes:
 					<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
 					
 					<!--- Set Application Datasource in custom Slatwall config --->
-					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../core/appcfc/applicationSettings.cfm" />#chr(13)&chr(10)#<cfinclude template="../../../plugins/mappings.cfm" />'>
+					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)&chr(10)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)&chr(10)#<cfinclude template="../../../core/appcfc/applicationSettings.cfm" />#chr(13)&chr(10)#<cfinclude template="../../../plugins/mappings.cfm" />'>
 				
 				</cfif>
 			</cfif>
