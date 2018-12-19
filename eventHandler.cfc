@@ -96,7 +96,7 @@ Notes:
 					</cfif>
 					
 					<!--- Set Application Datasource in custom Slatwall config --->
-					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)#<cfinclude template="../../../plugins/mappings.cfm" />'>
+					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfif fileExists("../../../config/applicationSettings.cfm")>#chr(13)&chr(10)&chr(09)#<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)&chr(10)&chr(09)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)&chr(10)#<cfelse>#chr(13)&chr(10)&chr(09)#<cfinclude template="../../../core/appcfc/applicationSettings.cfm" />#chr(13)&chr(10)#</cfif>#chr(13)&chr(10)#<cfinclude template="../../../plugins/mappings.cfm" />'>
 					
 				<!--- Legacy Installation Mode / AWS Slatwall Fetching --->
 				<cfelse>
@@ -126,7 +126,7 @@ Notes:
 						</cfif>
 						
 						<!--- Set Application Datasource in custom Slatwall config --->
-						<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)#<cfinclude template="../../../plugins/mappings.cfm" />'>
+						<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfif fileExists("../../../config/applicationSettings.cfm")>#chr(13)&chr(10)&chr(09)#<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)&chr(10)&chr(09)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)&chr(10)#<cfelse>#chr(13)&chr(10)&chr(09)#<cfinclude template="../../../core/appcfc/applicationSettings.cfm" />#chr(13)&chr(10)#</cfif>#chr(13)&chr(10)#<cfinclude template="../../../plugins/mappings.cfm" />'>
 					
 					</cfif>
 				</cfif>
