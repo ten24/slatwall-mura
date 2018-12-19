@@ -95,7 +95,7 @@ Notes:
 		</setting>
 		<setting>
 			<name>legacyInstallMode</name>
-			<label>Legacy Mode</label>
+			<label>Legacy Installation Mode</label>
 			<hint>Plugin uses legacy functionality for installing Slatwall</hint>
 			<type>radioGroup</type>
 			<required>true</required>
