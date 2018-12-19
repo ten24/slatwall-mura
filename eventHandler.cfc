@@ -77,10 +77,18 @@ Notes:
 					</cfif>
 					
 					<cfhttp url="#repoBranchURL#" method="get" path="#getTempDirectory()#" file="#downloadFileName#" throwonerror="true" />
-					<cfdirectory action="create" directory="#slatwallDirectoryPath#">
+					<!--- <cfdirectory action="create" directory="#slatwallDirectoryPath#"> --->
 					
 					<!--- Unzip downloaded file --->
-					<cfzip action="unzip" destination="#slatwallDirectoryPath#" file="#getTempDirectory()##downloadFileName#" >
+					<!--- <cfzip action="unzip" destination="#slatwallDirectoryPath#" file="#getTempDirectory()##downloadFileName#" > --->
+					
+					<!--- Unzip downloaded file --->
+					<cfset var slatwallZipDirectoryList = "" />
+					<cfzip action="unzip" destination="#getDirectoryFromPath(expandPath('/'))#" file="#getTempDirectory()##downloadFileName#" >
+					<cfzip action="list" file="#getTempDirectory()##downloadFileName#" name="slatwallZipDirectoryList" >
+	
+					<!--- Move the directory from where it is in the temp location to this directory --->
+					<cfdirectory action="rename" directory="#getDirectoryFromPath(expandPath('/'))##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#" newdirectory="#slatwallDirectoryPath#" />
 					
 					<!--- Delete the meta directory --->
 					<cfif variables.config.getSetting('metaDirectoryRemoval')>
