@@ -41,7 +41,7 @@ Notes:
 	<package>slatwall-mura</package>
 	<directoryFormat>packageOnly</directoryFormat>
 	<provider>Slatwall</provider>
-	<version>1.5</version>
+	<version>1.6</version>
 	<providerURL>http://www.getslatwall.com/</providerURL>
 	<category>Application</category>
 	<settings>
@@ -74,6 +74,44 @@ Notes:
 			<defaultvalue>true</defaultvalue>
 			<optionlist>true^false</optionlist>
 			<optionlabellist> Yes ^ No </optionlabellist>
+		</setting>
+		<setting>
+			<name>repoBranchVersion</name>
+			<label>Slatwall Version</label>
+			<hint>Determines which version of Slatwall to setup. Any branch in the slatwall git repository can also be used instead.</hint>
+			<type>radioGroup</type>
+			<required>true</required>
+			<defaultvalue>master</defaultvalue>
+			<optionlist>master^develop^branch</optionlist>
+			<optionlabellist> Stable ^ Bleeding Edge ^ Custom Branch </optionlabellist>
+		</setting>
+		<setting>
+			<name>repoBranchURL</name>
+			<label>Slatwall Git Repository</label>
+			<hint>If 'Custom Branch' selected, determines which github repository zip archive to use.</hint>
+			<type>text</type>
+			<required>false</required>
+			<defaultvalue>https://github.com/ten24/slatwall/archive/master.zip</defaultvalue>
+		</setting>
+		<setting>
+			<name>legacyInstallMode</name>
+			<label>Legacy Installation Mode</label>
+			<hint>Plugin uses legacy functionality for installing Slatwall</hint>
+			<type>radioGroup</type>
+			<required>true</required>
+			<defaultvalue>false</defaultvalue>
+			<optionlist>true^false</optionlist>
+			<optionlabellist>Enabled ^ Disabled</optionlabellist>
+		</setting>
+		<setting>
+			<name>metaDirectoryRemoval</name>
+			<label>Meta Directory Removal</label>
+			<hint>The installation will delete the Slatwall meta directory which contains unit tests and other development artifacts.</hint>
+			<type>radioGroup</type>
+			<required>true</required>
+			<defaultvalue>true</defaultvalue>
+			<optionlist>true^false</optionlist>
+			<optionlabellist>Yes ^ No</optionlabellist>
 		</setting>
 		<!--
 		<setting>
