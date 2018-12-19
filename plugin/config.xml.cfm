@@ -93,6 +93,26 @@ Notes:
 			<required>false</required>
 			<defaultvalue>https://github.com/ten24/slatwall/archive/master.zip</defaultvalue>
 		</setting>
+		<setting>
+			<name>legacyInstallMode</name>
+			<label>Legacy Mode</label>
+			<hint>Plugin uses legacy functionality for installing Slatwall</hint>
+			<type>radioGroup</type>
+			<required>true</required>
+			<defaultvalue>false</defaultvalue>
+			<optionlist>true^false</optionlist>
+			<optionlabellist>Enabled ^ Disabled</optionlabellist>
+		</setting>
+		<setting>
+			<name>metaDirectoryRemoval</name>
+			<label>Meta Directory Removal</label>
+			<hint>The installation will delete the Slatwall meta directory which contains unit tests and other development artifacts.</hint>
+			<type>radioGroup</type>
+			<required>true</required>
+			<defaultvalue>true</defaultvalue>
+			<optionlist>true^false</optionlist>
+			<optionlabellist>Yes ^ No</optionlabellist>
+		</setting>
 		<!--
 		<setting>
 			<name>slatwallInstallPath</name>
