@@ -121,7 +121,9 @@ Notes:
 						<cfzip action="unzip" destination="#slatwallDirectoryPath#" file="#getTempDirectory()##downloadFileName#" >
 						
 						<!--- Delete the meta directory --->
-						<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
+						<cfif variables.config.getSetting('metaDirectoryRemoval')>
+							<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
+						</cfif>
 						
 						<!--- Set Application Datasource in custom Slatwall config --->
 						<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)#<cfinclude template="../../../plugins/mappings.cfm" />'>
