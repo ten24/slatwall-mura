@@ -1,18 +1,14 @@
 <!---
-
     Slatwall - An Open Source eCommerce Platform
     Copyright (C) 2011 ten24, LLC
-
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
@@ -32,9 +28,7 @@
     this exception to your version of the library, but you are not
     obligated to do so.  If you do not wish to do so, delete this
     exception statement from your version.
-
 Notes:
-
 --->
 <cfcomponent extends="mura.plugin.pluginGenericEventHandler">
 	
@@ -50,50 +44,34 @@ Notes:
 	
 	<cffunction name="onApplicationLoad" access="public" returntype="any">
 		<cfargument name="$" />
-		
 		<cfif (not structKeyExists(getAppMeta(), "Mappings") or not structKeyExists(getAppMeta().Mappings, "/Slatwall") and not structKeyExists(application, "slatwallReset"))>
 			
 			<cfset application.appInitialized=false />
 			<cfset application.slatwallReset=true />
-			<cfset var zipName  = 'slatwall-latest'/> 	
 			
 			<cfset var muraContext = application.configBean.getContext() />
 			<cfset var slatwallDirectoryPath = expandPath('#muraContext#/') & "Slatwall" />
-			<cfset var downloadURL = "https://s3.amazonaws.com/slatwall-releases/#zipName#.zip" />
-			<cfset var downloadHashURL = "https://s3.amazonaws.com/slatwall-releases/#zipName#.md5.txt" />
-			<cfset var slatwallRootPath = expandPath("/Slatwall") />
-			<cfset var downloadUUID = createUUID() />
-			<cfset var downloadFileName = "slatwall-#downloadUUID#.zip" />
-			<cfset var downloadHashFileName = "slatwall-#downloadUUID#.md5.txt" />
-			<cfset var deleteDestinationContentExclusionList = '/.git,/apps,/integrationServices,/custom,/WEB-INF,/.project,/setting.xml,/.htaccess,/web.config,/.settings,/.gitignore' />
-			<cfset var copyContentExclusionList = "" />
-			<cfset var slatwallDirectoryList = "" />
 			
 			<!--- Verify that Slatwall is installed --->
 			<cfif not directoryExists(slatwallDirectoryPath)>
-								 
-				<!--- start download of zip & hash --->
-				<cfhttp url="#downloadURL#" method="get" path="#getTempDirectory()#" file="#downloadFileName#" throwonerror="true" />
-				<cfhttp url="#downloadHashURL#" method="get" path="#getTempDirectory()#" file="#downloadHashFileName#" throwonerror="true" />
-	
-				<!--- Get the MD5 hash of the downloaded file --->
-				<cfset var downloadedZipHash = hash(fileReadBinary("#getTempDirectory()##downloadFileName#"), "MD5") />
-				<cfset var hashFileValue = listFirst(fileRead("#getTempDirectory()##downloadHashFileName#"), " ") />
-	
-				<cfif downloadedZipHash eq hashFileValue>
-					
-					<cfdirectory action="create" directory="#slatwallDirectoryPath#">
-
-					<!--- Unzip downloaded file --->
-					<cfzip action="unzip" destination="#slatwallDirectoryPath#" file="#getTempDirectory()##downloadFileName#" >
-					
-					<!--- Delete the meta directory --->
-					<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
-					
-					<!--- Set Application Datasource in custom Slatwall config --->
-					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)#<cfinclude template="../../../plugins/mappings.cfm" />'>
+				 
+				<!--- start download --->
+				<cfhttp url="https://github.com/ten24/Slatwall/archive/master.zip" method="get" path="#getTempDirectory()#" file="slatwall.zip" />
 				
-				</cfif>
+				<!--- Unzip downloaded file --->
+				<cfset var slatwallZipDirectoryList = "" />
+				<cfzip action="unzip" destination="#getDirectoryFromPath(expandPath('/'))#" file="#getTempDirectory()#slatwall.zip" >
+				<cfzip action="list" file="#getTempDirectory()#slatwall.zip" name="slatwallZipDirectoryList" >
+				
+				<!--- Move the directory from where it is in the temp location to this directory --->
+				<cfdirectory action="rename" directory="#getDirectoryFromPath(expandPath('/'))##listFirst(listFirst(slatwallZipDirectoryList.DIRECTORY, "\"), "/")#" newdirectory="#slatwallDirectoryPath#" />
+				
+				<!--- Delete the meta directory --->
+				<cfdirectory action="delete" directory="#slatwallDirectoryPath#/meta" recurse="true" />
+				
+				<!--- Set Application Datasource in custom Slatwall config --->
+				<cffile action="write" file="#slatwallDirectoryPath#/custom/config/configApplication.cfm" output='<cfinclude template="../../../config/applicationSettings.cfm" />#chr(13)#<cfinclude template="../../../config/mappings.cfm" />#chr(13)#<cfinclude template="../../../plugins/mappings.cfm" />'>
+				
 			</cfif>
 			
 			<!--- Add the proper mappings to the cfApplication.cfm file --->
@@ -106,7 +84,10 @@ Notes:
 			</cfif>
 			
 			<!--- Run any pre-update scripts --->
-			<cfif not fileExists("#slatwallDirectoryPath#/custom/config/lastFullUpdate.txt.cfm") or not fileExists("#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm")>
+			<cfif 
+				not fileExists("#slatwallDirectoryPath#/custom/system/lastFullUpdate.txt.cfm") 
+				or not fileExists("#slatwallDirectoryPath#/custom/system/preUpdatesRun.txt.cfm")
+			>
 				<cfset var preUpdatesRun = "" />
 				<cfset var preUpdateFiles = "" />
 				
@@ -122,11 +103,11 @@ Notes:
 				<cfset this.datasource.username = application.configBean.getDBUsername() />
 				<cfset this.datasource.password = application.configBean.getDBPassword() />
 					
-				<cfif not fileExists("#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm")>
-					<cffile action="write" file="#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm" output="" />
+				<cfif not fileExists("#slatwallDirectoryPath#/custom/system/preUpdatesRun.txt.cfm")>
+					<cffile action="write" file="#slatwallDirectoryPath#/custom/system/preUpdatesRun.txt.cfm" output="" />
 				</cfif>
 				
-				<cffile action="read" file="#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm" variable="preUpdatesRun" />
+				<cffile action="read" file="#slatwallDirectoryPath#/custom/system/preUpdatesRun.txt.cfm" variable="preUpdatesRun" />
 				
 				<cfdirectory action="list" directory="#slatwallDirectoryPath#/config/scripts/preupdate" name="preUpdateFiles" />
 				
@@ -139,7 +120,7 @@ Notes:
 					</cfif>
 				</cfloop>
 				
-				<cffile action="write" file="#slatwallDirectoryPath#/custom/config/preUpdatesRun.txt.cfm" output="#preUpdatesRun#" /> 
+				<cffile action="write" file="#slatwallDirectoryPath#/custom/system/preUpdatesRun.txt.cfm" output="#preUpdatesRun#" /> 
 			</cfif>
 			
 			<!--- Redirect the user to the same page they are on --->
@@ -148,20 +129,15 @@ Notes:
 			<cflocation url="#muraContext#/admin?muraAction=csettings.list&siteID=#session.siteID#" addtoken="false" />
 			
 		<cfelseif structKeyExists(getAppMeta(), "Mappings") and structKeyExists(getAppMeta().Mappings, "/Slatwall")>
-			
 			<!--- Add the rest of those methods to the eventHandler --->
+			
 			<cfset variables.config.addEventHandler( getSlatwallEventHandler() ) />
-			
-			<!--- Call Reload on the Slatwall application so that the verify setup re-instantiates --->
-			<cfset getSlatwallApplication().onApplicationStart() />
-			<cfset getSlatwallApplication().getHibachiScope().setApplicationValue('initialized',false) />
-			<cfset getSlatwallApplication().bootstrap() />
-			
+
 			<!--- call the verifySetup method in the event handler, so that we can do any setup stuff --->
 			<cfset getSlatwallEventHandler().verifySetup( $=arguments.$ ) />
 		</cfif>
-		
 		<cfset structDelete(application, "slatwallReset") />
+		
 	</cffunction>
 	
 	<cffunction name="onContentEdit" access="public" returntype="any">
@@ -175,11 +151,6 @@ Notes:
 			<cfset variables.slatwallEventHandler = createObject("component", "Slatwall.integrationServices.mura.model.handler.MuraEventHandler") />
 		</cfif>
 		<cfreturn variables.slatwallEventHandler />
-	</cffunction>
-	
-	<cffunction name="getSlatwallApplication" returntype="any">
-		<cfset variables.slatwallApplication = createObject("component", "Slatwall.Application") />
-		<cfreturn variables.slatwallApplication />
 	</cffunction>
 	
 	<cffunction name="getAppMeta">
